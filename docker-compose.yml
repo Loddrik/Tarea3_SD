@@ -1,0 +1,61 @@
+version: '3'
+networks:
+  lared:
+    driver: bridge
+services:
+  backend:
+    build: ./Server
+    environment:
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+    depends_on:
+      - cassandra-node1
+      - cassandra-node2
+      - cassandra-node3
+    networks:
+      - lared
+    ports:
+      - "3000:3000"
+
+  cassandra-node1:
+    image: bitnami/cassandra:4.0.4
+    volumes:
+      - ./Cassandra/docker-entrypoint-initdb.d
+    environment:
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+      - CASSANDRA_PASSWORD_SEEDER=yes
+    networks:
+      - lared
+    ports:
+      - '9042:9042'
+
+  cassandra-node2:
+    image: bitnami/cassandra:4.0.4
+    environment:
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+      - CASSANDRA_PASSWORD_SEEDER=yes
+    networks:
+      - lared
+    links:
+      - cassandra-node1
+    ports:
+      - '9142:9142'
+
+  cassandra-node3:
+    image: bitnami/cassandra:4.0.4
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+    networks:
+      - lared
+    links:
+      - cassandra-node1
+    ports:
+      - '9242:9242'
