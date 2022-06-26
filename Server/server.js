@@ -2,6 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser");
 const router = require("./Routes/routes");
 const dotenv = require("dotenv");
+const cors = require("cors")
 
 
 
