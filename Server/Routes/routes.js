@@ -10,14 +10,14 @@ var authProvider = new cassandra.auth.PlainTextAuthProvider('cassandra', 'cassan
 const client = new cassandra.Client({
     contactPoints: ['css_node_1', 'css_node_2', 'css_node_3'],
     localDataCenter: 'datacenter1',
-    keyspace: 'medic_1',
+    keyspace: 'm1',
     authProvider: authProvider,
 })
 
 const client_2 = new cassandra.Client({
     contactPoints: ['css_node_1', 'css_node_2', 'css_node_3'],
     localDataCenter: 'datacenter1',
-    keyspace: 'medic_2',
+    keyspace: 'm2',
     authProvider: authProvider,
 });
 
@@ -28,17 +28,16 @@ const root = (req, res) => {
 
 const getRecipes = async (req, res) => {
     const query = 'SELECT * FROM recetas';
-    const result = await client_2.execute(query);
-    res.json(result.rows);
+    const response = await client_2.execute(query);
+    res.json(response.rows);
 };
 
 const editRecipes = async (req, res) => {
     const query = 'select * from recetas where id = ? ALLOW FILTERING';
     const { id, comentario, farmacos, doctor } = req.body;
-    client_2.execute(query, [id], { prepare: true }).then(result => {
-        if (result.rows[0] != undefined) {
-            // Existe el registro, a Updatear
-            console.log(result.rows);
+    client_2.execute(query, [id], { prepare: true }).then(response => {
+        if (response.rows[0] != undefined) {
+            console.log(response.rows);
             const query2 = `update recetas 
                         set 
                             comentario = ?, 
@@ -46,8 +45,7 @@ const editRecipes = async (req, res) => {
                             doctor = ? 
                       where 
                             id=?;`;
-            client_2.execute(query2, [comentario, farmacos, doctor, id]).then(result2 => {
-                console.log(result2)
+            client_2.execute(query2, [comentario, farmacos, doctor, id]).then(response_ => {
                 res.json("Receta actualizadisima! 🫣");
             }).catch(err => { console.log(err); });
         } else {
@@ -60,13 +58,13 @@ const editRecipes = async (req, res) => {
 
 const deleteRecipe = async (req, res) => {
     const query2 = 'select * from recetas where id = ? ALLOW FILTERING';
-    client_2.execute(query2, [req.body.id], { prepare: true }).then(result => {
-        if (result.rows[0] != undefined) {
+    client_2.execute(query2, [req.body.id], { prepare: true }).then(response => {
+        if (response.rows[0] != undefined) {
             // Existe el registro, a Deletear
             const query = `delete from recetas where id=?;`;
-            console.log(result.rows);
-            client_2.execute(query, [req.body.id]).then(result2 => {
-                console.log(result2)
+            console.log(response.rows);
+            client_2.execute(query, [req.body.id]).then(response_ => {
+                console.log(response_)
                 res.json("La receta 📄 de ID: " + req.body.id + " ha sido eliminada! 👊🏼");
             }).catch(err => { console.log(err); });
         } else {
@@ -97,26 +95,26 @@ const createClient = async (req, res) => {
                                             doctor) 
                                             VALUES(?,?,?,?,?);`;
     const receta = req.body;
-    var gen_id_1 = uuidv4();
-    var gen_id_2 = uuidv4();
+    var uuid_1 = uuidv4();
+    var uuid_2 = uuidv4();
 
-    await client.execute(query, [receta.rut]).then(result => {
-        console.log('Result 💸' + result.rows[0]);
+    await client.execute(query, [receta.rut]).then(response => {
+        console.log('Resultado 💸' + response.rows[0]);
 
-        if (result.rows[0] != undefined) {
+        if (response.rows[0] != undefined) {
             console.log("existe el paciente")
-            client_2.execute(query3, [gen_id_2, result.rows[0].id, receta.comentario, receta.farmacos, receta.doctor]).then(result2 => {
-                console.log('Result 💸' + result2);
-                res.json({ 'ID_Receta 📄': gen_id_2 })
+            client_2.execute(query3, [uuid_2, response.rows[0].id, receta.comentario, receta.farmacos, receta.doctor]).then(response_ => {
+                console.log('Resultado 💸' + response_);
+                res.json({ 'ID_Receta 📄': uuid_2 })
             }).catch((err) => { console.log('ERROR:', err); });
 
         } else {
             console.log("No existe el paciente")
-            client.execute(query2, [gen_id_1, receta.nombre, receta.apellido, receta.rut, receta.email, receta.fecha_nacimiento]).then(result => {
-                console.log('Result ' + result);
-                client_2.execute(query3, [gen_id_2, gen_id_1, receta.comentario, receta.farmacos, receta.doctor]).then(result2 => {
-                    console.log('Result ' + result2);
-                    res.json({ 'ID_Receta 📄': gen_id_2 })
+            client.execute(query2, [uuid_1, receta.nombre, receta.apellido, receta.rut, receta.email, receta.fecha_nacimiento]).then(response => {
+                console.log('Result ' + response);
+                client_2.execute(query3, [uuid_2, uuid_1, receta.comentario, receta.farmacos, receta.doctor]).then(response_ => {
+                    console.log('Result ' + response_);
+                    res.json({ 'ID_Receta 📄': uuid_2 })
                 }).catch((err) => { console.log('ERROR:', err); });
             }).catch((err) => { console.log('ERROR:', err); });
         }

@@ -1,6 +1,6 @@
-use medic_1;
+use m1;
 
-CREATE TABLE medic_1.pacientes(
+CREATE TABLE m1.pacientes(
     id UUID, 
     nombre text,
     apellido text,
@@ -10,9 +10,9 @@ CREATE TABLE medic_1.pacientes(
     PRIMARY KEY(id,rut)
 );
 
-use medic_2;
+use m2;
 
-CREATE TABLE medic_2.recetas(
+CREATE TABLE m2.recetas(
     id UUID PRIMARY KEY, 
     id_paciente UUID,
     comentario text,
