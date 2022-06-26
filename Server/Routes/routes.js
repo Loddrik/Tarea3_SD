@@ -121,12 +121,6 @@ const createClient = async (req, res) => {
         }
     }).catch((err) => { console.log('ERROR:', err); });
 }
-var router = Router()
 
-router.get("/", root);
-router.get("/getRecipes", getRecipes)
-router.post("/edit", editRecipes);
-router.post("/delete", deleteRecipe);
-router.post("/create", createClient);
 
 module.exports = { root, getRecipes, editRecipes, deleteRecipe, createClient }
