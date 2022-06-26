@@ -129,4 +129,4 @@ router.post("/edit", editRecipes);
 router.post("/delete", deleteRecipe);
 router.post("/create", createClient);
 
-module.exports = router
+module.exports = { root, getRecipes, editRecipes, deleteRecipe, createClient }
