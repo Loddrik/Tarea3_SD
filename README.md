@@ -166,32 +166,34 @@ es la correcta? ¿Qué ocurre cuando se quiere escalar la solución? ¿Qué mejo
 Oriente su respuesta hacia el Sharding y comente una estrategia que pidría seguir para ordenar
 los datos.
 
-Como sabemos, el sharding es una forma de segmentar los datos de una base de datos de forma horizontal, es decir, partir la base de datos principal en varias en bases de datos más pequeñas y repartiendo la información. De esta forma lo que se consigue es una partición de datos en diferentes bases que tengan cierta homogeneidad, para conseguir una escalabilidad mucho más rápida.
-
-En Cassandra, la distribución y la replicación de datos van juntas. Los datos se organizan por tabla y se identifican mediante una clave principal, que determina en qué nodo se almacenan los datos. Las réplicas son copias de filas. Cuando los datos se escriben por primera vez, también se los denomina réplica.
-
-Los factores que influyen en la replicación incluyen:
-
-Nodos virtuales : asigna la propiedad de los datos a las máquinas físicas.
-Particionador : divide los datos en el clúster.
-Estrategia de replicación : determina las réplicas para cada fila de datos.
-Snitch : define la información de topología que utiliza la estrategia de replicación para colocar réplicas.
-
-Entonces... Cassandra admite sharding?
-
-Si, Cassandra admite la fragmentación horizontal, pero de una forma no tradicional.
-
-En Mongodb, cada nodo secundario contiene datos completos del nodo principal, pero en Cassandra, cada nodo secundario tiene la responsabilidad de mantener solo algunas particiones clave de datos.
-
-Cassandra divide los nodos (porque si no puede dividirlo, no puede escalarlo). Todos los datos de un clúster de Cassandra se dividen en "el anillo" y cada nodo del anillo es responsable de uno o más rangos de claves. Se tiene control sobre el particionador (p. ej., aleatorio, ordenado) y sobre cuántos nodos en el anillo se debe replicar una clave/columna según sus requisitos.
-
-Entonces... es una buena solución para el problema el usar cassandra?
-
-Según Nuestro Juicio si es una buena solución, al igual que Fruitter, al pertenecer a Melon Musk es un producto que si o si crecerá de manera exponencial en su inicio de producción, entonces estará evolucionando rápidamente y está en "modo de inicio", Cassandra podría ser una buena opción debido a su modelo de datos sin esquema. Esto facilita mantener la base de datos al día con los cambios de la aplicación a medida que se implementa rápidamente.
-
-Por otro lado, hay que mirar la distribución geográfica, Cassandra tiene soporte listo para usar para la distribución geográfica de datos. Se puede configurar Cassandra fácilmente para replicar datos en múltiples centros de datos. Esto ya que La nueva aplicación implementada es algo de caracter global, que podría ver un beneficio de rendimiento al poner los datos cerca del usuario.
-
-Para fragmentar, se necesita encontrar una buena clave para ordenar sus registros. Por ejemplo, se podría dividir los registros de los clientes en 26 máquinas, una para cada letra del alfabeto, cada una de las cuales alojaría solo los registros de los clientes cuyos apellidos comienzan con esa letra en particular. Sin embargo, es probable que esta no sea una buena estrategia por la carga que recibirían las letras más usadas vs las menos usadas.
-
-Entonces una propuesta es fragmentar de acuerdo con algo numérico, como el rut de las personas o el id de las entidades(recetas o clientes), aunque todo depende de cómo es probable que se distribuyan los datos específicos.
-
+>
+>Como sabemos, el sharding es una forma de segmentar los datos de una base de datos de forma horizontal, es decir, partir la base de datos principal en varias en bases de datos más pequeñas y repartiendo la información. De esta forma lo que se consigue es una partición de datos en diferentes bases que tengan cierta homogeneidad, para conseguir una escalabilidad mucho más rápida.
+>
+>En Cassandra, la distribución y la replicación de datos van juntas. Los datos se organizan por tabla y se identifican mediante una clave principal, que determina en qué nodo se almacenan los datos. Las réplicas son copias de filas. Cuando los datos se escriben por primera vez, también se los denomina réplica.
+>
+>Los factores que influyen en la replicación incluyen:
+>
+>Nodos virtuales : asigna la propiedad de los datos a las máquinas físicas.
+>Particionador : divide los datos en el clúster.
+>Estrategia de replicación : determina las réplicas para cada fila de datos.
+>Snitch : define la información de topología que utiliza la estrategia de replicación para colocar réplicas.
+>
+>Entonces... Cassandra admite sharding?
+>
+>Si, Cassandra admite la fragmentación horizontal, pero de una forma no tradicional.
+>
+>En Mongodb, cada nodo secundario contiene datos completos del nodo principal, pero en Cassandra, cada nodo secundario tiene la responsabilidad de mantener solo algunas particiones clave de datos.
+>
+>Cassandra divide los nodos (porque si no puede dividirlo, no puede escalarlo). Todos los datos de un clúster de Cassandra se dividen en "el anillo" y cada nodo del anillo es responsable de uno o más rangos de claves. Se tiene control sobre el particionador (p. ej., aleatorio, ordenado) y sobre cuántos nodos en el anillo se debe replicar una clave/columna según sus requisitos.
+>
+>Entonces... es una buena solución para el problema el usar cassandra?
+>
+>Según Nuestro Juicio si es una buena solución, al igual que Fruitter, al pertenecer a Melon Musk es un producto que si o si crecerá de manera exponencial en su inicio de producción, entonces estará evolucionando rápidamente y está en "modo de inicio", Cassandra podría ser una buena opción debido a su modelo de datos sin esquema. Esto facilita mantener la base de datos al día con los cambios de la aplicación a medida que se implementa rápidamente.
+>
+>Por otro lado, hay que mirar la distribución geográfica, Cassandra tiene soporte listo para usar para la distribución geográfica de datos. Se puede configurar Cassandra fácilmente para replicar datos en múltiples centros de datos. Esto ya que La nueva aplicación implementada es algo de caracter global, que podría ver un beneficio de rendimiento al poner los datos cerca del usuario.
+>
+>Para fragmentar, se necesita encontrar una buena clave para ordenar sus registros. Por ejemplo, se podría dividir los registros de los clientes en 26 máquinas, una para cada letra del alfabeto, cada una de las cuales alojaría solo los registros de los clientes cuyos apellidos comienzan con esa letra en particular. Sin embargo, es probable que esta no sea una buena estrategia por la carga que recibirían las letras más usadas vs las menos usadas.
+>
+>Entonces una propuesta es fragmentar de acuerdo con algo numérico, como el rut de las personas o el id de las entidades(recetas o clientes), aunque todo depende de cómo es probable que se distribuyan los datos específicos.
+>
+>
