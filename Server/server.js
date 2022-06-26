@@ -1,8 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser");
-const router = require("./Routes/routes");
 const dotenv = require("dotenv");
-const cors = require("cors")
+const cors = require("cors");
 
 
 
@@ -16,7 +15,7 @@ app.use(
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(router);
+app.use(require("./Routes/routes"));
 
 
 app.listen(3000, 'localhost', () => {
