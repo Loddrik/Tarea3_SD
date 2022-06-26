@@ -3,22 +3,23 @@ const { Router } = require('express')
 const { v4: uuidv4 } = require('uuid');
 
 
+var port = process.env.PORT || 3000;
+var host = process.env.PORT || '0.0.0.0';
 
-
-var authProvider = new cassandra.auth.PlainTextAuthProvider('cassandra', 'cassandra');
+var PlainTextAuthProvider = cassandra.auth.PlainTextAuthProvider;
 
 const client = new cassandra.Client({
     contactPoints: ['css_node_1', 'css_node_2', 'css_node_3'],
     localDataCenter: 'datacenter1',
     keyspace: 'm1',
-    authProvider: authProvider,
+    authProvider: new PlainTextAuthProvider('cassandra', 'cassandra'),
 })
 
 const client_2 = new cassandra.Client({
     contactPoints: ['css_node_1', 'css_node_2', 'css_node_3'],
     localDataCenter: 'datacenter1',
     keyspace: 'm2',
-    authProvider: authProvider,
+    authProvider: new PlainTextAuthProvider('cassandra', 'cassandra'),
 });
 
 const root = (req, res) => {

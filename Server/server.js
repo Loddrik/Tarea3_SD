@@ -1,11 +1,12 @@
 const express = require("express")
 const bodyParser = require("body-parser");
 const router = require("./Routes/routes");
+const dotenv = require("dotenv");
 
 
 
 const app = express();
-
+dotenv.config();
 app.use(
     bodyParser.urlencoded({
         extended: true,
@@ -13,6 +14,7 @@ app.use(
 );
 
 app.use(bodyParser.json());
+app.use(cors());
 app.use(router);
 
 
