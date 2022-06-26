@@ -1,6 +1,7 @@
 const express = require("express")
-const bodyParser = require("body-parser")
-const { root, getRecipes, editRecipes, deleteRecipe, createClient } = require("./Routes/routes")
+const bodyParser = require("body-parser");
+const router = require("./Routes/routes");
+
 
 
 const app = express();
@@ -12,15 +13,10 @@ app.use(
 );
 
 app.use(bodyParser.json());
-
-
-app.get("/", root);
-app.get("/getRecipes", getRecipes);
-app.post("/edit", editRecipes);
-app.post("/delete", deleteRecipe);
-app.post("/create", createClient);
+app.use(router);
 
 
 app.listen(3000, 'localhost', () => {
-    console.log(`API run in: http://localhost:3000.`);
+    console.log(`API corriendo (mela) en el puorto 😈💦  : 3000.`);
+    console.log(`Necesitamos un 7 para eximirnos 🙏🏻`)
 })

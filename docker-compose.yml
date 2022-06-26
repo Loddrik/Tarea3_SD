@@ -6,56 +6,53 @@ services:
   backend:
     build: ./Server
     environment:
-      - CASSANDRA_USER=cassandra
+      - CASSANDRA_SEEDS=css_node_1,css_node_2,css_node_3
       - CASSANDRA_PASSWORD=cassandra
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+      - CASSANDRA_USER=cassandra
     depends_on:
-      - cassandra-node1
-      - cassandra-node2
-      - cassandra-node3
+      - css_node_1
+      - css_node_2
+      - css_node_3
     networks:
       - lared
     ports:
       - "3000:3000"
-
-  cassandra-node1:
+  css_node_1:
     image: bitnami/cassandra:4.0.4
     volumes:
-      - ./Cassandra/docker-entrypoint-initdb.d
+      - ./Cassandra:/docker-entrypoint-initdb.d
     environment:
+      - CASSANDRA_PASSWORD_SEEDER=yes
       - CASSANDRA_USER=cassandra
+      - CASSANDRA_SEEDS=css_node_1,css_node_2,css_node_3
       - CASSANDRA_PASSWORD=cassandra
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_PASSWORD_SEEDER=yes
     networks:
       - lared
     ports:
       - '9042:9042'
-
-  cassandra-node2:
+  css_node_2:
     image: bitnami/cassandra:4.0.4
     environment:
+      - CASSANDRA_PASSWORD_SEEDER=yes
       - CASSANDRA_USER=cassandra
       - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_SEEDS=css_node_1,css_node_2,css_node_3
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-      - CASSANDRA_PASSWORD_SEEDER=yes
     networks:
       - lared
     links:
-      - cassandra-node1
+      - css_node_1
     ports:
       - '9142:9142'
-
-  cassandra-node3:
+  css_node_3:
     image: bitnami/cassandra:4.0.4
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+      - CASSANDRA_SEEDS=css_node_1,css_node_2,css_node_3
     networks:
       - lared
     links:
-      - cassandra-node1
+      - css_node_1
     ports:
       - '9242:9242'
