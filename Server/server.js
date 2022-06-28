@@ -145,7 +145,7 @@ app.get('/create', createClient);
 
 
 
-app.listen(3000, 'localhost', () => {
+app.listen(port, host, () => {
     console.log(`API corriendo (mela) en el puorto 😈💦  : 3000.`);
     console.log(`Necesitamos un 7 para eximirnos 🙏🏻`)
 })

@@ -16,8 +16,7 @@ services:
     networks:
       - lared
     ports:
-      - "3000:3000"
-
+      - 3000:3000
   css_node_1:
     image: bitnami/cassandra:4.0.4
     volumes:

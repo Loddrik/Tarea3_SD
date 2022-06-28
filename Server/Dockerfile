@@ -15,4 +15,4 @@ RUN npm install uuid express dse-driver dotenv cors body-parser nodemon avsc cas
 # Bundle app source
 COPY . .
 EXPOSE 3000
-CMD [ "npm", "run","server" ]
+CMD [ "node", "server.js" ]
