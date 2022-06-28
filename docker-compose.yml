@@ -17,7 +17,6 @@ services:
       - lared
     ports:
       - "3000:3000"
-    volumes: -Server:/workspace
 
   css_node_1:
     image: bitnami/cassandra:4.0.4
