@@ -24,7 +24,7 @@
 >
 3. Esperar a que los contenedores estén listos, esto toma tiempo así que tome asiento y traiga sus palomitas 🍿 ⏰.
 
-4. Una vez cargado (observar en la consola), podemos hacer uso de las rutas solicitdas. Un ejemplo de uso es el siguiente:
+4. Una vez cargado (observar en la consola), podemos hacer uso de las rutas solicitadas. Un ejemplo de uso es el siguiente:
 
 >
 > 1. Creamos un paciente en la siguiente ruta:
@@ -53,13 +53,13 @@
 >    http://localhost:3000/edit [POST]
 >    ```
 >
-> con los parámetros:
+> con los parámetros(el id cambia para cada objeto que se agrega, este solamente es un caso de uso real):
 >
 >```json
 >    {
->    "id":"id de la receta que salga jeje",
->    "comentario": "Debido a la inflamación del recto y ano, se recomienda una buena lavada de poto.",
->    "farmacos":"Supositorios",
+>    "id":"86537ae7-1e60-433d-a4ab-864a5664bf94",
+>    "comentario": "Debido a la inflamación se receta un antinflamatorio xd.",
+>    "farmacos":"Ibuprofeno",
 >    "doctor": "Nicolás Hidalgo"
 >   }
 >    ```
@@ -80,7 +80,7 @@
 >
 >```json
 >    {
->       "id": "id que le aparezca al pvto del brian :v"
+>       "id": "86537ae7-1e60-433d-a4ab-864a5664bf94"
 >    }
 > 
 >    ```
