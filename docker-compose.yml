@@ -17,6 +17,8 @@ services:
       - lared
     ports:
       - "3000:3000"
+    volumes: -Server:/workspace
+
   css_node_1:
     image: bitnami/cassandra:4.0.4
     volumes:
@@ -31,6 +33,7 @@ services:
       - lared
     ports:
       - '9042:9042'
+
   css_node_2:
     image: bitnami/cassandra:4.0.4
     environment:
@@ -45,6 +48,7 @@ services:
       - css_node_1
     ports:
       - '9142:9142'
+
   css_node_3:
     image: bitnami/cassandra:4.0.4
     environment:
